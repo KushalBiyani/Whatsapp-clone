@@ -1,22 +1,19 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import './Login.css';
-import {auth,provider} from './firebase';
-import { actionTypes } from './reducer';
-import { useStateValue } from './StateProvider';
+import { useAuth } from "../authContext"
+import { useHistory } from "react-router-dom"
 
 function Login() {
-    const [{},dispatch] = useStateValue();
-    const signIn = () => {
-        auth
-            .signInWithPopup(provider)
-            .then((result) => {
-                dispatch({
-                    type: actionTypes.SET_USER,
-                    user: result.user,
-                })
-            })
-            .catch((error) => alert(error.message));
+    const history = useHistory()
+    const { signInWithGoogle } = useAuth()
+    async function signIn(){
+        try {
+            await signInWithGoogle()
+            history.push("/")
+          } catch {
+            alert("Failed to Login")
+          }
     }
     return (
         <div className="login">
