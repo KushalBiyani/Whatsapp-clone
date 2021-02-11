@@ -9,8 +9,8 @@ import { useAuth } from "../authContext"
 function Sidebar(props) {
 
     const [rooms, setRooms] = useState([]);
+    const [users, setUsers] = useState([]);
     const { currentUser } = useAuth()
-
     useEffect(() => {
         const unsubscribe = db.collection('rooms').onSnapshot(snapshot => (
             setRooms(snapshot.docs.map(doc => (
@@ -19,12 +19,20 @@ function Sidebar(props) {
                     data: doc.data()
                 }
             )
-
             ))
         ));
-
+        const unsubscribe1 = db.collection('users').onSnapshot(snapshot => (
+            setUsers(snapshot.docs.map(doc => (
+                {
+                    id: doc.id,
+                    data: doc.data()
+                }
+            )
+            ))
+        ));
         return () => {
             unsubscribe();
+            unsubscribe1();
         }
     },[]); 
 
@@ -53,8 +61,12 @@ function Sidebar(props) {
             </div>
             <div className="sidebar_chats">
                 <SidebarChat addNewChat/>
+                {users.map(user=> (
+                    currentUser.uid !== user.id && 
+                    <SidebarChat key={user.id} userid={user.id} name={user.data.name} profileImage={user.data.profileUrl} currentUser={currentUser.uid}/>
+                ))}
                 {rooms.map(room=> (
-                    <SidebarChat key={room.id} id={room.id} name={room.data.name}/>
+                    <SidebarChat key={room.id} roomid={room.id} name={room.data.name}/>
                 ))}
             </div>
         </div>

@@ -9,49 +9,55 @@ import db from '../firebase';
 import firebase from 'firebase';
 import { useAuth } from "../authContext"
 
-function Chat() {
+function UserChat() {
     const [input, setInput] = useState("");
-    const [seed, setSeed] = useState("");
-    const { roomId } = useParams();
-    const [roomName, setRoomName] = useState("");
+    const { userId, senderId } = useParams();
+    const [users, setUsers] = useState("");
     const [messages, setMessages] = useState([]);
-    const { currentUser , logout} = useAuth()
-
+    const { currentUser, logout } = useAuth()
     useEffect(() => {
-        if (roomId) {
-            db.collection('rooms').doc(roomId).onSnapshot(snapshot => {
-                setRoomName(snapshot.data().name);
+        if (userId) {
+            db.collection('users').doc(userId).onSnapshot(snapshot => {
+                setUsers(snapshot.data());
             });
-
-            db.collection('rooms').doc(roomId).collection("messages").orderBy("timestamp", "asc").onSnapshot(snapshot => {
-                setMessages(snapshot.docs.map(doc => doc.data()))
-            });
-
+            db.collection('messages')
+                .where('uid1', 'in', [userId, senderId])
+                .orderBy("timestamp", "asc").onSnapshot(snapshot => {
+                    const conversations = [];
+                    snapshot.forEach(doc => {
+                        if (
+                            (doc.data().uid1 === userId && doc.data().uid2 === senderId)
+                            ||
+                            (doc.data().uid1 === senderId && doc.data().uid2 === userId)
+                        ) {
+                            conversations.push(doc.data())
+                        }
+                    });
+                    setMessages(conversations)
+                });
         }
-    }, [roomId])
-    useEffect(() => {
-        setSeed(Math.floor(Math.random() * 5000));
-    }, [roomId]);
+    }, [userId , senderId])
 
     const sendMessage = (e) => {
         e.preventDefault();
-        db.collection('rooms').doc(roomId).collection('messages').add({
+        db.collection('messages').add({
             message: input,
             name: currentUser.displayName,
+            uid1: senderId,
+            uid2: userId,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         })
-
         setInput("");
     }
 
     return (
         <div className="app_body">
-        <Sidebar />
+            <Sidebar />
             <div className='chat'>
                 <div className='chat_header'>
-                    <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+                    <Avatar src={users.profileUrl} />
                     <div className='chat_headerInfo'>
-                        <h3 className='chat-room-name'>{roomName}</h3>
+                        <h3 className='chat-room-name'>{users.name}</h3>
                         <p className='chat-room-last-seen'>
                             Last seen {" "}
                             {new Date(
@@ -95,4 +101,4 @@ function Chat() {
     )
 }
 
-export default Chat
+export default UserChat
