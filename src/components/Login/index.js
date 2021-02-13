@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import './Login.css';
-import { useAuth } from "../authContext"
+import { useAuth } from "../../authContext"
 import { useHistory } from "react-router-dom"
 
 function Login() {

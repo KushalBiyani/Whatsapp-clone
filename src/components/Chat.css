@@ -1,5 +1,5 @@
 .chat{
-    flex: 0.65;    
+    width: 70%;   
     display: flex;
     flex-direction: column;
 }
@@ -14,7 +14,7 @@
 
 .chat_header{
     display: flex;
-    padding: 20px;
+    padding: 10px 20px;
     align-items: center;
     border-bottom: 1px solid lightgray;
 }
@@ -44,29 +44,39 @@
     background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
     background-repeat: repeat;
     background-position: center;
-    padding: 30px;
-    overflow:scroll;
+    padding: 20px;
+    overflow-y:scroll;
+    overflow-x: hidden
 }
-
+.chat_message img{
+    display: inline;
+    display: block;
+    height: 150px;
+    width: 250px;
+}
 .chat_message{
     position: relative;
     font-size: 16px;
     border-radius: 10px;
-    padding: 10px;
+    padding: 12px;
     background-color: white;
     width: fit-content;
+    margin-top: 20px;
 }
 
 .chat_name{
     position: absolute;
-    top:-15px;
+    top:-17px;
     font-weight: 800;
-    font-size: xx-small;
+    font-size: x-small;
 }
 
 .chat_timestemp{
     margin-left: 10px;
-    font-size: xx-small;
+    font-size: x-small;
+    color: gray;
+    font-weight: 600;
+
 }
 
 .chat_receiver{
@@ -83,6 +93,7 @@
 }
 
 .chat_footer > form{
+    height: 47px;
     flex: 1;
     display: flex;
 }
@@ -90,11 +101,16 @@
 .chat_footer > form > input{
     flex: 1;
     border-radius: 30px;
-    padding: 10px;
+    padding: 15px;
     border: none;
     margin: 0 10px 0px 10px;
 }
 
-.chat_footer > form > button{
-    display: none;
+.send{
+    color:  #25D366;
+}
+.chat_footer svg{
+    padding: 10px 0 10px 10px;
+    height: 1.2em;
+    width: 1.2em;
 }

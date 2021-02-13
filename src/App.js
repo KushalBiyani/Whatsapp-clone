@@ -3,9 +3,10 @@ import React from 'react';
 import Chat from './components/Chat';
 import UserChat from './components/UserChat';
 import Login from './components/Login';
-import PrivateRoute from "./components/PrivateRoute"
+import PrivateRoute from "./components/PrivateRoute" 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { AuthProvider } from "./authContext"
+import 'emoji-mart/css/emoji-mart.css'
 
 function App() {
   return (

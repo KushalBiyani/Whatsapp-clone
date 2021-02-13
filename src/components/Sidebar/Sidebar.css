@@ -1,5 +1,7 @@
 .sidebar{
-    flex: 0.35;
+    width: 30%;
+    overflow-y:scroll;
+    overflow-x: hidden
 }
 
 .sidebar_search{
@@ -30,16 +32,22 @@
 
 .sidebar_header{
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     padding: 20px;
     border-right: 1px solid lightgray;
+}
+hr{
+    margin:0
 }
 
 .sidebar_headerRight{
     display: flex;
     align-items: center;    
-    justify-content: space-between;
-    min-width: 10vw;
+    padding: 0px 20px;
+    font-weight: 700;
+    /* justify-content: space-between; */
+    /* min-width: 10vw; */
+    font-size: 1.5rem;
 }
 
 .sidebar_headerRight > .MuiSvgIcon-root {
