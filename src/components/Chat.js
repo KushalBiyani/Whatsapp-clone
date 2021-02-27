@@ -15,7 +15,7 @@ function Chat() {
     const [input, setInput] = useState("");
     const [seed, setSeed] = useState("");
     const { roomId } = useParams();
-    const [roomName, setRoomName] = useState("");
+    const [room, setRoom] = useState({});
     const [messages, setMessages] = useState([]);
     const { currentUser, logout } = useAuth();
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -23,7 +23,7 @@ function Chat() {
     useEffect(() => {
         if (roomId) {
             db.collection('rooms').doc(roomId).onSnapshot(snapshot => {
-                setRoomName(snapshot.data().name);
+                setRoom(snapshot.data());
             });
 
             db.collection('rooms').doc(roomId).collection("messages").orderBy("timestamp", "asc").onSnapshot(snapshot => {
@@ -32,9 +32,6 @@ function Chat() {
 
         }
     }, [roomId])
-    useEffect(() => {
-        setSeed(Math.floor(Math.random() * 5000));
-    }, [roomId]);
 
     const sendMessage = (e) => {
         e.preventDefault();
@@ -65,9 +62,9 @@ function Chat() {
             <Sidebar />
             <div className='chat'>
                 <div className='chat_header'>
-                    <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+                    <Avatar src={`https://avatars.dicebear.com/api/human/${room.seed}.svg`} />
                     <div className='chat_headerInfo'>
-                        <h3 className='chat-room-name'>{roomName}</h3>
+                        <h3 className='chat-room-name'>{room.name}</h3>
                     </div>
                     <div className="chat_headerRight">
                         <input type="file" ref={fileUpload}

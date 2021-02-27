@@ -31,7 +31,8 @@ function SidebarChat({ userid, roomid, name, addNewChat, profileImage , currentU
 
         if (roomName) {
             db.collection("rooms").add({
-                name: roomName
+                name: roomName,
+                seed: Math.floor(Math.random() * 5000)
             })
         }
     };

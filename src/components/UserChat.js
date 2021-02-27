@@ -61,7 +61,7 @@ function UserChat() {
         let emoji = e.native;
         setInput(input + emoji)
     };
-    const emojiPicker = e =>{
+    const emojiPicker = e => {
         setShowEmojiPicker(prevCheck => !prevCheck);
     }
 
@@ -73,12 +73,6 @@ function UserChat() {
                     <Avatar src={users.profileUrl} />
                     <div className='chat_headerInfo'>
                         <h3 className='chat-room-name'>{users.name}</h3>
-                        <p className='chat-room-last-seen'>
-                            Last seen {" "}
-                            {new Date(
-                                messages[messages.length - 1]?.timestamp?.toDate()
-                            ).toUTCString()}
-                        </p>
                     </div>
                     <div className="chat_headerRight">
                         <input type="file" ref={fileUpload}
